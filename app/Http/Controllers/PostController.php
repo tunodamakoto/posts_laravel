@@ -42,8 +42,8 @@ class PostController extends Controller
         ]);
 
         $post = new Post();
-        $post->title = $request->title;
-        $post->body = $request->body;
+        $post->title = $inputs['title'];
+        $post->body = $inputs['body'];
         $post->user_id = auth()->user()->id;
         if(request('image')) {
             $original = request()->file('image')->getClientOriginalName();
@@ -61,9 +61,9 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Post $post)
     {
-        //
+        return view('post.show', compact('post'));
     }
 
     /**
@@ -72,9 +72,9 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Post $post)
     {
-        //
+        return view('post.edit', compact('post'));
     }
 
     /**
@@ -84,9 +84,25 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Post $post)
     {
-        //
+        $inputs = $request->validate([
+            'title' => 'required|max:255',
+            'body' => 'required|max:255',
+            'image' => 'image|max:1024',
+        ]);
+
+        $post->title = $inputs['title'];
+        $post->body = $inputs['body'];
+
+        if(request('image')) {
+            $original = request()->file('image')->getClientOriginalName();
+            $name = date('Ymd_His').'_'.$original;
+            request()->file('image')->move('storage/images', $name);
+            $post->image = $name;
+        }
+        $post->save();
+        return redirect()->route('post.show', $post)->with('message', '投稿を更新しました。');
     }
 
     /**
@@ -95,8 +111,9 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Post $post)
     {
-        //
+        $post->delete();
+        return redirect()->route('home')->with('message', '投稿を削除しました。');
     }
 }

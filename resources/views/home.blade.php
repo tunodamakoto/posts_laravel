@@ -1,5 +1,10 @@
 @extends('layouts.app')
 @section('content')
+
+@if(session('message'))
+<div class="alert alert-success">{{ session('message') }}</div>
+@endif
+
 @foreach ($posts as $post)
 <div class="container-fluid mt-20" style="margin-left:-10px;">
     <div class="row">
@@ -7,7 +12,7 @@
             <div class="card mb-4">
                 <div class="card-header">
                     <div class="media flex-wrap w-100 align-items-center">
-                        <div class="media-body ml-3">{{ $post->title }}
+                        <div class="media-body ml-3"><a href="{{ route('post.show', $post) }}">{{ $post->title }}</a>
                             <div class="text-muted small">{{ $post->user->name }}</div>
                         </div>
                         <div class="text-muted small ml-3">
@@ -18,6 +23,9 @@
                 </div>
                 <div class="card-body">
                     <p>{{ $post->body }}</p>
+                    @if($post->image)
+                        <img src="{{ asset('storage/images/'.$post->image)}}" class="img-fluid mx-auto d-block" style="height:300px;">
+                    @endif
                 </div>
             </div>
         </div>
