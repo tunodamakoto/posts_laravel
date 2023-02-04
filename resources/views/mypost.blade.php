@@ -6,7 +6,7 @@
 @endif
 
 @if(count($posts) == 0)
-<p>投稿がありません。</p>
+<p>あたはまだ投稿していません。</p>
 @else
 
 @foreach ($posts as $post)

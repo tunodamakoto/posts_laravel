@@ -5,11 +5,14 @@
 <div class="alert alert-success">{{ session('message') }}</div>
 @endif
 
-@if(count($posts) == 0)
-<p>投稿がありません。</p>
+@if(count($comments) == 0)
+<p>あなたはまだコメントしていません。</p>
 @else
 
-@foreach ($posts as $post)
+@foreach ($comments->unique('post_id') as $comment)
+@php
+    $post = $comment->post;
+@endphp
 <div class="container-fluid mt-20" style="margin-left:-10px;">
     <div class="row">
         <div class="col-md-12">
