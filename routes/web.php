@@ -13,11 +13,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Auth::routes();
+Route::get('/', function() {
+    return view('auth.login');
+});
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::resource('/post', 'PostController');
@@ -27,3 +30,6 @@ Route::post('/post/comment/store', 'CommentController@store')->name('comment.sto
 Route::get('/mypost', 'HomeController@mypost')->name('home.mypost');
 
 Route::get('/mycomment', 'HomeController@mycomment')->name('home.mycomment');
+
+Route::get('/contact/create', 'ContactController@create')->name('contact.create');
+Route::post('/contact/store', 'ContactController@store')->name('contact.store');
