@@ -3,6 +3,7 @@
 
 <div class="card mb-4">
     <div class="card-header">
+        <img src="{{ asset('storage/avatar/'.($post->user->avatar??'user_default.jpg')) }}" class="rouded-circle" style="width:40px;height:40px;">
         <div class="text-muted small mr-3"> 
             {{$post->user->name}}
         </div>
@@ -43,6 +44,7 @@
 @foreach($post->comments as $comment)
 <div class="card mb-4">
     <div class="card-header">
+        <img src="{{ asset('storage/avatar/'.($post->user->avatar??'user_default.jpg')) }}" class="rouded-circle" style="width:40px;height:40px;">
         {{ $comment->user->name }}
     </div>
     <div class="card-body">
