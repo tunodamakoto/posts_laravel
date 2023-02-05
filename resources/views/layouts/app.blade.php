@@ -85,7 +85,7 @@
         </nav>
 
         <main class="py-4">
-            @if(Auth::check())
+            @if(Auth::check() && Auth::user()->hasVerifiedEmail())
                 <div class="container">
                     <div class="row">
                         <div class="col-12 col-md-4 col-lg-3">
