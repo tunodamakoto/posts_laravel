@@ -28,6 +28,11 @@ Route::middleware('verified')->group(function() {
     Route::post('/post/comment/store', 'CommentController@store')->name('comment.store');
     Route::get('/mypost', 'HomeController@mypost')->name('home.mypost');
     Route::get('/mycomment', 'HomeController@mycomment')->name('home.mycomment');
+    
+    // プロファイルの編集
+    Route::get('/profile/{user}/edit', 'ProfileController@edit')->name('profile.edit');
+    Route::put('/profile/{user}', 'ProfileController@update')->name('profile.update');
+    
 
     // 管理者用画面
     Route::middleware(['can:admin'])->group(function() {
