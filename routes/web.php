@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,27 +14,27 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+// メール認証
+Auth::routes(['verify' => true]);
 
-Auth::routes();
 Route::get('/', function() {
     return view('auth.login');
 });
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::resource('/post', 'PostController');
+// ログイン後の通常のユーザー画面
+Route::middleware('verified')->group(function() {
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::resource('/post', 'PostController');
+    Route::post('/post/comment/store', 'CommentController@store')->name('comment.store');
+    Route::get('/mypost', 'HomeController@mypost')->name('home.mypost');
+    Route::get('/mycomment', 'HomeController@mycomment')->name('home.mycomment');
 
-Route::post('/post/comment/store', 'CommentController@store')->name('comment.store');
+    // 管理者用画面
+    Route::middleware(['can:admin'])->group(function() {
+        Route::get('/profile/index', 'ProfileController@index')->name('profile.index');
+    });
+});
 
-Route::get('/mypost', 'HomeController@mypost')->name('home.mypost');
-
-Route::get('/mycomment', 'HomeController@mycomment')->name('home.mycomment');
-
+// お問い合わせ
 Route::get('/contact/create', 'ContactController@create')->name('contact.create');
 Route::post('/contact/store', 'ContactController@store')->name('contact.store');
-
-Route::middleware(['can:admin'])->group(function() {
-    Route::get('/profile/index', 'ProfileController@index')->name('profile.index');
-});
