@@ -36,7 +36,9 @@ Route::middleware('verified')->group(function() {
 
     // 管理者用画面
     Route::middleware(['can:admin'])->group(function() {
+        // ユーザー一覧
         Route::get('/profile/index', 'ProfileController@index')->name('profile.index');
+        Route::delete('/profile/delete/{user}', 'ProfileController@delete')->name('profile.delete');
     });
 });
 

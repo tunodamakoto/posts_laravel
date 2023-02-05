@@ -52,4 +52,11 @@ class ProfileController extends Controller
         $user->update($inputs);
         return back()->with('message', '情報を更新しました。');
     }
+
+    public function delete(User $user)
+    {
+        Storage::delete('public/avatar/'.$user->avatar);
+        $user->delete();
+        return back()->with('message', 'ユーザーを削除しました。');
+    }
 }
